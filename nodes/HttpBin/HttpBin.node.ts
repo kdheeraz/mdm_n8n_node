@@ -9,20 +9,20 @@ export class HttpBin implements INodeType {
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
-		description: 'Interact with HttpBin API',
+		description: 'Interact with MDM API',
 		defaults: {
-			name: 'HttpBin',
+			name: 'Mobilytix',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
 		credentials: [
 			{
-				name: 'httpbinApi',
+				name: 'MobilytixAPI',
 				required: false,
 			},
 		],
 		requestDefaults: {
-			baseURL: 'https://httpbin.org',
+			baseURL:'https://prime.mobilytixdigital.com/api/v1',
 			url: '',
 			headers: {
 				Accept: 'application/json',

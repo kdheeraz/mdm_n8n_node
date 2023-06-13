@@ -6,8 +6,8 @@ import {
 } from 'n8n-workflow';
 
 export class HttpBinApi implements ICredentialType {
-	name = 'httpbinApi';
-	displayName = 'HttpBin API';
+	name = 'MobilytixAPI';
+	displayName = 'MobilytixAPI';
 	documentationUrl = '<your-docs-url>';
 	properties: INodeProperties[] = [
 		{
@@ -17,10 +17,17 @@ export class HttpBinApi implements ICredentialType {
 			default: '',
 		},
 		{
+			displayName: 'Auth URL',
+			name: 'auth_url',
+			type: 'string',
+			default: 'https://prime.mobilytixdigital.com/api/v1/auth/local',
+		},
+
+		{
 			displayName: 'Domain',
 			name: 'domain',
 			type: 'string',
-			default: 'https://httpbin.org',
+			default: 'https://prime.mobilytixdigital.com/api/v1',
 		},
 	];
 
@@ -41,7 +48,7 @@ export class HttpBinApi implements ICredentialType {
 	test: ICredentialTestRequest = {
 		request: {
 			baseURL: '={{$credentials?.domain}}',
-			url: '/bearer',
+			url: '/enterprise-details',
 		},
 	};
 }

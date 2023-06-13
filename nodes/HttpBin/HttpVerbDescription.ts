@@ -26,13 +26,25 @@ export const httpVerbOperations: INodeProperties[] = [
 				},
 			},
 			{
-				name: 'DELETE',
+				name: 'DELETE Contact',
 				value: 'delete',
-				action: 'Perform a DELETE request',
+				action: 'Perform a DELETE contact request',
 				routing: {
 					request: {
 						method: 'DELETE',
-						url: '/delete',
+						url: '/contact_remove',
+					},
+				},
+			},
+
+			{
+				name: 'POST',
+				value: 'post',
+				action: 'Create a contact',
+				routing: {
+					request: {
+						method: 'POST',
+						url: '/single_contact',
 					},
 				},
 			},
@@ -43,6 +55,128 @@ export const httpVerbOperations: INodeProperties[] = [
 
 // Here we define what to show when the `get` operation is selected.
 // We do that by adding `operation: ["get"]` to `displayOptions.show`
+
+const createContactOperation : INodeProperties[] =[
+	{
+		displayName: 'Type of Data',
+		name: 'typeofData',
+		default: 'queryParameter',
+		description: 'Select type of data to send [Query Parameter Arguments, JSON-Body]',
+		displayOptions: {
+			show: {
+				resource: ['httpVerb'],
+				operation: ['post'],
+			},
+		},
+		options: [
+			{
+				name: 'Query',
+				value: 'queryParameter',
+			},
+			{
+				name: 'JSON',
+				value: 'jsonData',
+			},
+		],
+		required: true,
+		type: 'options',
+	},
+	// {
+	// 	displayName: 'Query Parameters',
+	// 	name: 'arguments',
+	// 	default: {},
+	// 	description: "The request's query parameters",
+	// 	displayOptions: {
+	// 		show: {
+	// 			resource: ['httpVerb'],
+	// 			operation: ['post'],
+	// 			typeofData: ['queryParameter'],
+	// 		},
+	// 	},
+	// 	options: [
+	// 		{
+	// 			name: 'keyvalue',
+	// 			displayName: 'Key:Value',
+	// 			values: [
+	// 				{
+	// 					displayName: 'Key',
+	// 					name: 'key',
+	// 					type: 'string',
+	// 					default: '',
+	// 					required: true,
+	// 					description: 'Key of query parameter',
+	// 				},
+	// 				{
+	// 					displayName: 'Value',
+	// 					name: 'value',
+	// 					type: 'string',
+	// 					default: '',
+	// 					routing: {
+	// 						send: {
+	// 							property: '={{$parent.key}}',
+	// 							type: 'query',
+	// 						},
+	// 					},
+	// 					required: true,
+	// 					description: 'Value of query parameter',
+	// 				},
+	// 			],
+	// 		},
+	// 	],
+	// 	type: 'fixedCollection',
+	// 	typeOptions: {
+	// 		multipleValues: true,
+	// 	},
+	// },
+	{
+		displayName: 'JSON Object',
+		name: 'arguments',
+		default: {},
+		description: "The request's JSON properties",
+		displayOptions: {
+			show: {
+				resource: ['httpVerb'],
+				operation: ['post'],
+				typeofData: ['jsonData'],
+			},
+		},
+		options: [
+			{
+				name: 'keyvalue',
+				displayName: 'Key:Value',
+				values: [
+					{
+						displayName: 'Key',
+						name: 'key',
+						type: 'string',
+						default: '',
+						required: true,
+						description: 'Key of JSON property',
+					},
+					{
+						displayName: 'Value',
+						name: 'value',
+						type: 'json',
+						default: '',
+						routing: {
+                         request:{
+                           method:"POST",
+						   url:"/single_contact",
+						   body:{contact_info:'={{JSON.parse($parent.value)}}'}
+						 }
+						},
+						required: true,
+						description: 'Value of JSON property',
+					},
+				],
+			},
+		],
+		type: 'fixedCollection',
+		typeOptions: {
+			multipleValues: true,
+		},
+	},
+];
 const getOperation: INodeProperties[] = [
 	{
 		displayName: 'Type of Data',
@@ -91,8 +225,8 @@ const getOperation: INodeProperties[] = [
 					{
 						displayName: 'Value',
 						name: 'value',
-						type: 'string',
-						default: '',
+						type: 'json',
+						default: {},
 						routing: {
 							send: {
 								property: '={{$parent.key}}',
@@ -114,6 +248,129 @@ const getOperation: INodeProperties[] = [
 
 // Here we define what to show when the DELETE Operation is selected.
 // We do that by adding `operation: ["delete"]` to `displayOptions.show`
+
+const deleteContactOperation : INodeProperties[] =[
+	{
+		displayName: 'Type of Data',
+		name: 'typeofData',
+		default: 'queryParameter',
+		description: 'Select type of data to send [Query Parameter Arguments, JSON-Body]',
+		displayOptions: {
+			show: {
+				resource: ['httpVerb'],
+				operation: ['delete'],
+			},
+		},
+		options: [
+			{
+				name: 'Query',
+				value: 'queryParameter',
+			},
+			{
+				name: 'JSON',
+				value: 'jsonData',
+			},
+		],
+		required: true,
+		type: 'options',
+	},
+	// {
+	// 	displayName: 'Query Parameters',
+	// 	name: 'arguments',
+	// 	default: {},
+	// 	description: "The request's query parameters",
+	// 	displayOptions: {
+	// 		show: {
+	// 			resource: ['httpVerb'],
+	// 			operation: ['post'],
+	// 			typeofData: ['queryParameter'],
+	// 		},
+	// 	},
+	// 	options: [
+	// 		{
+	// 			name: 'keyvalue',
+	// 			displayName: 'Key:Value',
+	// 			values: [
+	// 				{
+	// 					displayName: 'Key',
+	// 					name: 'key',
+	// 					type: 'string',
+	// 					default: '',
+	// 					required: true,
+	// 					description: 'Key of query parameter',
+	// 				},
+	// 				{
+	// 					displayName: 'Value',
+	// 					name: 'value',
+	// 					type: 'string',
+	// 					default: '',
+	// 					routing: {
+	// 						send: {
+	// 							property: '={{$parent.key}}',
+	// 							type: 'query',
+	// 						},
+	// 					},
+	// 					required: true,
+	// 					description: 'Value of query parameter',
+	// 				},
+	// 			],
+	// 		},
+	// 	],
+	// 	type: 'fixedCollection',
+	// 	typeOptions: {
+	// 		multipleValues: true,
+	// 	},
+	// },
+	{
+		displayName: 'JSON Object',
+		name: 'arguments',
+		default: {},
+		description: "The request's JSON properties",
+		displayOptions: {
+			show: {
+				resource: ['httpVerb'],
+				operation: ['delete'],
+				typeofData: ['jsonData'],
+			},
+		},
+		options: [
+			{
+				name: 'keyvalue',
+				displayName: 'Key:Value',
+				values: [
+					{
+						displayName: 'Key',
+						name: 'key',
+						type: 'string',
+						default: '',
+						required: true,
+						description: 'Key of JSON property',
+					},
+					{
+						displayName: 'Value',
+						name: 'value',
+						type: 'json',
+						default: '',
+						routing: {
+							send: {
+								property: '={{$parent.key}}',
+								type: 'query',
+							},
+						},
+						required: true,
+						description: 'Value of JSON property',
+					},
+				],
+			},
+		],
+		type: 'fixedCollection',
+		typeOptions: {
+			multipleValues: true,
+		},
+	},
+];
+
+
 const deleteOperation: INodeProperties[] = [
 	{
 		displayName: 'Type of Data',
@@ -245,4 +502,8 @@ export const httpVerbFields: INodeProperties[] = [
 	/*                              httpVerb:delete                               */
 	/* -------------------------------------------------------------------------- */
 	...deleteOperation,
+
+	...createContactOperation,
+
+	...deleteContactOperation
 ];
